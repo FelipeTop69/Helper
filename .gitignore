@@ -1,0 +1,38 @@
+# Backend
+# Global packages, tools, and cache
+Backend/.nuget/
+Backend/*/packages/
+Backend/.vs/
+
+# Build artifacts
+Backend/*/bin/
+Backend/*/obj/
+Backend/*/out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+*.idea/
+
+# Dotnet tools & logs
+*.nupkg
+*.snupkg
+*.log
+
+# Auto-generated files
+Generated/
+*.generated.cs
+
+# Secrets and config
+*appsettings.Secrets.json
+
+# ===============================================
+
+# Frontend
+# VS Code
+Frontend/.vscode/
+
