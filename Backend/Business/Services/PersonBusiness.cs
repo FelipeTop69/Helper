@@ -18,34 +18,6 @@ namespace Business.Services
 
         }
 
-        protected override void Validate(PersonDTO person)
-        {
-            if (person == null)
-            {
-                throw new ValidationException("El objeto Person no puede ser nulo.");
-            }
-
-            if (string.IsNullOrWhiteSpace(person.Name))
-            {
-                _logger.LogWarning("Intento de crear/actualizar un Peron con Name vacío.");
-                throw new ValidationException("Name", "El nombre del Person es obligatorio.");
-            }
-        }
-
-        protected override async Task ValidateCreate(PersonDTO person)
-        {
-            var normalizedNewName = Normalize(person.Name);
-
-            var allForms = await GetAllAsync();
-
-            var exists = allForms.Any(f =>
-                Normalize(f.Name) == normalizedNewName
-            );
-
-            if (exists)
-                throw new ValidationException("Ya existe un Person con ese nombre.");
-        }
-
         public async Task<IEnumerable<PersonDTO>> GetAvailableAsync()
         {
             var allPersons = await _data.GetAllAsync();
@@ -60,9 +32,37 @@ namespace Business.Services
             return _mapper.Map<IEnumerable<PersonDTO>>(availablePersons);
         }
 
-        private string Normalize(string input)
+        protected override void Validate(PersonDTO person)
         {
-            return input.Trim().ToLower().Replace(" ", "");
+            if (person == null)
+            {
+                throw new ValidationException("El objeto Person no puede ser nulo.");
+            }
+
+            if (string.IsNullOrWhiteSpace(person.Name))
+            {
+                _logger.LogWarning("Intento de crear/actualizar un Peron con Name vacío.");
+                throw new ValidationException("Name", "El nombre del Person es obligatorio.");
+            }
         }
+
+        //protected async Task ValidateCreate(PersonDTO person)
+        //{
+        //    var normalizedNewName = Normalize(person.Name);
+
+        //    var allForms = await GetAllAsync();
+
+        //    var exists = allForms.Any(f =>
+        //        Normalize(f.Name) == normalizedNewName
+        //    );
+
+        //    if (exists)
+        //        throw new ValidationException("Ya existe un Person con ese nombre.");
+        //}
+
+        //private string Normalize(string input)
+        //{
+        //    return input.Trim().ToLower().Replace(" ", "");
+        //}
     }
 }

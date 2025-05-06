@@ -76,12 +76,8 @@ namespace Business.Services
             }
         }
 
-        protected override void Validate(UserRoleDTO entity)
-        {
-            throw new NotImplementedException();
-        }
 
-        protected override Task ValidateCreate(UserRoleDTO entity)
+        protected override void Validate(UserRoleDTO entity)
         {
             throw new NotImplementedException();
         }

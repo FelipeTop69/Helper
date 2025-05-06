@@ -56,7 +56,7 @@ namespace Business.Services
             }
         }
 
-        protected  void ValidateOptions(UserOptionsDTO entity)
+        protected void ValidateOptions(UserOptionsDTO entity)
         {
             if (entity == null)
             {
@@ -87,7 +87,7 @@ namespace Business.Services
             );
 
             if (exists)
-                throw new ValidationException("Ya existe un Role con ese nombre.");
+                throw new ValidationException("Ya existe un User con ese nombre.");
         }
 
         private string Normalize(string input)
@@ -96,14 +96,7 @@ namespace Business.Services
         }
 
 
-
-
         protected override void Validate(UserDTO entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task ValidateCreate(UserDTO entity)
         {
             throw new NotImplementedException();
         }

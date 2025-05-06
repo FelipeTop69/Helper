@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
+using Entity.DTOs.UserDTOs;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
 
@@ -146,8 +147,36 @@ namespace Business.Services
             }
         }
 
-
         protected abstract void Validate(DTO entity);
-        protected abstract Task ValidateCreate(DTO entity);
+
+        protected virtual async Task ValidateCreate(DTO entityDTO)
+        {
+            var nameProp = typeof(DTO).GetProperty("Name");
+            if (nameProp == null)
+                throw new InvalidOperationException("DTO no contiene la propiedad 'Name'");
+
+            var nameValue = nameProp.GetValue(entityDTO)?.ToString();
+            if (string.IsNullOrWhiteSpace(nameValue))
+                throw new ValidationException("Name", $"El nombre de {typeof(T).Name} no puede ser vacío");
+
+            var normalizedNewName = Normalize(nameValue);
+
+            var allForms = await GetAllAsync();
+
+            var exists = allForms.Any(f =>
+            {
+                var fUsername = typeof(DTO).GetProperty("Name")?.GetValue(f)?.ToString();
+                return Normalize(fUsername!) == normalizedNewName;
+            });
+
+            if (exists)
+                throw new ValidationException("Name", $"Ya existe un {typeof(T).Name} con ese nombre.");
+        }
+
+
+        private string Normalize(string input)
+        {
+            return input.Trim().ToLower().Replace(" ", "");
+        }
     }
 }

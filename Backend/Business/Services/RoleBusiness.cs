@@ -28,23 +28,23 @@ namespace Business.Services
             }
         }
 
-        protected override async Task ValidateCreate(RoleDTO role)
-        {
-            var normalizedNewName = Normalize(role.Name);
+        //protected  async Task ValidateCreate(RoleDTO role)
+        //{
+        //    var normalizedNewName = Normalize(role.Name);
 
-            var allForms = await GetAllAsync();
+        //    var allForms = await GetAllAsync();
 
-            var exists = allForms.Any(f =>
-                Normalize(f.Name) == normalizedNewName
-            );
+        //    var exists = allForms.Any(f =>
+        //        Normalize(f.Name) == normalizedNewName
+        //    );
 
-            if (exists)
-                throw new ValidationException("Ya existe un Role con ese nombre.");
-        }
+        //    if (exists)
+        //        throw new ValidationException("Ya existe un Role con ese nombre.");
+        //}
 
-        private string Normalize(string input)
-        {
-            return input.Trim().ToLower().Replace(" ", "");
-        }
+        //private string Normalize(string input)
+        //{
+        //    return input.Trim().ToLower().Replace(" ", "");
+        //}
     }
 }
