@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Repository;
 using Microsoft.Extensions.Logging;
-using Microsoft.SqlServer.Server;
 using Utilities.Exceptions;
 
 namespace Business.Services
@@ -147,6 +145,7 @@ namespace Business.Services
                 throw new ExternalServiceException("Base de datos", $"Error al eliminar logicamente {typeof(T).Name} con ID {id}", ex);
             }
         }
+
 
         protected abstract void Validate(DTO entity);
         protected abstract Task ValidateCreate(DTO entity);

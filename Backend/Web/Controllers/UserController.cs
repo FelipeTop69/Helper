@@ -1,5 +1,5 @@
 ﻿using Business.Services;
-using Entity.DTOs;
+using Entity.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Exceptions;
 
@@ -8,73 +8,73 @@ namespace Web.Controllers
     [Route("api/[controller]/")]
     [ApiController]
     [Produces("application/json")]
-    public class RoleController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly RoleBusiness _RoleBusiness;
-        private readonly ILogger<RoleController> _logger;
+        private readonly UserBusiness _userBusiness;
+        private readonly ILogger<UserController> _logger;
 
-        public RoleController(RoleBusiness RoleBusiness, ILogger<RoleController> logger)
+        public UserController(UserBusiness userBusiness, ILogger<UserController> logger)
         {
-            _RoleBusiness = RoleBusiness;
+            _userBusiness = userBusiness;
             _logger = logger;
         }
 
         [HttpGet("GetAll/")]
-        [ProducesResponseType(typeof(IEnumerable<RoleDTO>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<UserDTO>), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllRoles()
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var Rols = await _RoleBusiness.GetAllAsync();
-                return Ok(Rols);
+                var Users = await _userBusiness.GetAllAsync();
+                return Ok(Users);
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener Roles");
+                _logger.LogError(ex, "Error al obtener Users");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         [HttpGet("GetById/{id}")]
-        [ProducesResponseType(typeof(RoleDTO), 200)]
+        [ProducesResponseType(typeof(UserDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetRoleById(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
             try
             {
-                var Rol = await _RoleBusiness.GetByIdAsync(id);
-                return Ok(Rol);
+                var User = await _userBusiness.GetByIdAsync(id);
+                return Ok(User);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida para obtener el Role con ID: {RolId}", id);
+                _logger.LogWarning(ex, "Validación fallida para obtener el User con ID: {UserId}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Role no encontrado con ID: {RolId}", id);
+                _logger.LogInformation(ex, "User no encontrado con ID: {RolId}", id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener Role con ID: {RolId}", id);
+                _logger.LogError(ex, "Error al obtener User con ID: {RolId}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         [HttpPost("Create/")]
-        [ProducesResponseType(typeof(RoleDTO), 201)]
+        [ProducesResponseType(typeof(UserDTO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateRole([FromBody] RoleDTO RolDto)
+        public async Task<IActionResult> CreateRol([FromBody] UserOptionsDTO RolDto)
         {
             try
             {
-                var createdRol = await _RoleBusiness.CreateAsync(RolDto);
-                return CreatedAtAction(nameof(GetRoleById), new { id = createdRol.Id }, createdRol);
+                var createdRol = await _userBusiness.CreateAsyncNew(RolDto);
+                return CreatedAtAction(nameof(GetUserById), new { id = createdRol.Id }, createdRol);
             }
             catch (ValidationException ex)
             {
@@ -94,56 +94,56 @@ namespace Web.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateRole([FromBody] RoleDTO RolDto)
+        public async Task<IActionResult> UpdateUser([FromBody] UserOptionsDTO UserDto)
         {
             try
             {
-                var update = await _RoleBusiness.UpdateAsync(RolDto);
+                var update = await _userBusiness.UpdateAsyncNew(UserDto);
                 return Ok(update);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al actualizar Role con ID: {RolId}", RolDto.Id);
+                _logger.LogWarning(ex, "Validación fallida al actualizar User con ID: {UserId}", UserDto.Id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Role no encontrado con ID: {RolId}", RolDto.Id);
+                _logger.LogInformation(ex, "User no encontrado con ID: {UserId}", UserDto.Id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al actualizar el Role con ID: {RolId}", RolDto.Id);
+                _logger.LogError(ex, "Error al actualizar el  con ID: {UserId}", UserDto.Id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
-        
+
         [HttpDelete("Persistence/{id}/")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteRole(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {
-                var response = await _RoleBusiness.DeleteAsync(id);
-                return Ok(response); 
+                var response = await _userBusiness.DeleteAsync(id);
+                return Ok(response);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al eliminar Role con ID: {RolId}", id);
+                _logger.LogWarning(ex, "Validación fallida al eliminar User con ID: {UserId}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Role no encontrado con ID: {RolId}", id);
+                _logger.LogInformation(ex, "User no encontrado con ID: {UserId}", id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al eliminar el Role con ID: {RolId}", id);
+                _logger.LogError(ex, "Error al eliminar el User con ID: {UserId}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
@@ -153,28 +153,29 @@ namespace Web.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteLogicalRole(int id)
+        public async Task<IActionResult> DeleteLogicalUser(int id)
         {
             try
             {
-                var response = await _RoleBusiness.DeleteLogicalAsync(id);
+                var response = await _userBusiness.DeleteLogicalAsync(id);
                 return Ok(response);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al desactivar el rol con ID: {RolId}", id);
+                _logger.LogWarning(ex, "Validación fallida al eliminar User con ID: {UserId}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Role no encontrado con ID: {RolId}", id);
+                _logger.LogInformation(ex, "User no encontrado con ID: {UserId}", id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al desactivar el rol con ID: {RolId}", id);
+                _logger.LogError(ex, "Error al eliminar el User con ID: {UserId}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
     }
 }
+

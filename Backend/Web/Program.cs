@@ -3,7 +3,6 @@ using Business.Services;
 using Data.Factories;
 using Entity.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +18,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 //Entitys
 builder.Services.AddScoped<IDataFactoryGlobal, GlobalFactory>();
 
+builder.Services.AddScoped<PersonBusiness>();
 builder.Services.AddScoped<RoleBusiness>();
+builder.Services.AddScoped<UserRoleBusiness>();
+builder.Services.AddScoped<UserBusiness>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(GeneralMapper));

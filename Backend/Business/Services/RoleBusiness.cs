@@ -3,7 +3,6 @@ using Data.Factories;
 using Entity.DTOs;
 using Entity.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.SqlServer.Server;
 using Utilities.Exceptions;
 
 namespace Business.Services
@@ -40,7 +39,7 @@ namespace Business.Services
             );
 
             if (exists)
-                throw new ValidationException("Ya existe un formulario con ese nombre.");
+                throw new ValidationException("Ya existe un Role con ese nombre.");
         }
 
         private string Normalize(string input)

@@ -15,6 +15,6 @@ namespace Entity.DTOs.UserDTOs
         public bool Active { get; set; }
 
         public int PersonId { get; set; }
-        public string PersoName { get; set; } = string.Empty;
+        public string PersonName { get; set; } = string.Empty;
     }
 }
