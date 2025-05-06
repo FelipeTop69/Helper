@@ -1,30 +1,31 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  private http = inject(HttpClient);
-  private baseUrl = `${environment.apiURL}api/User/`;
+export class PersonService {
+
+  private baseUrl = environment.apiURL + 'api/Person/';
+
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}GetAll/`);
   }
 
+  getAvailable(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl + 'GetAvailable/');
+  }
 
   getById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}GetById/${id}/`);
   }
 
-  create(user: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}Create/`, user);
-  }
-
-  update(user: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}Update/`, user);
+  create(person: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}Create/`, person);
   }
 
   delete(id: number): Observable<any> {

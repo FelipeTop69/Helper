@@ -66,6 +66,24 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet("GetAvailable/")]
+        [ProducesResponseType(typeof(IEnumerable<PersonDTO>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAvailablePersons()
+        {
+            try
+            {
+                var availablePersons = await _personBusiness.GetAvailableAsync();
+                return Ok(availablePersons);
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al obtener las personas disponibles");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(PersonDTO), 201)]
         [ProducesResponseType(400)]

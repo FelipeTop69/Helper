@@ -1,0 +1,59 @@
+<h2 style="text-align: center;">Actualizar Usuario</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="formulario">
+    <!-- Campo Username -->
+    <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required>
+        <mat-error *ngIf="form.get('username')?.hasError('required')">
+            El nombre de usuario es requerido
+        </mat-error>
+        <mat-error *ngIf="form.get('username')?.hasError('minlength')">
+            El nombre de usuario debe tener al menos 3 caracteres
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Campo Password -->
+    <mat-form-field appearance="outline" style="display: block; margin-bottom: 0.5rem;">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
+        <button mat-icon-button matSuffix  (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Mostrar contraseña'" type="button">
+            <mat-icon class="mat-icon-view">
+                {{hidePassword ? 'visibility_off' : 'visibility'}}
+            </mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+            La contraseña es requerida
+        </mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            Mínimo 8 caracteres
+        </mat-error>
+        <mat-error class="mat-error-password" *ngIf="form.get('password')?.hasError('strongPassword')">
+            <span matTooltip="La contraseña debe incluir mayúsculas, minúsculas, números y caracteres especiales" matTooltipPosition="above">
+                La contraseña debe incluir mayúsculas, minúsculas, números y caracteres especiales
+            </span>        
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Toggle para Reactivar Usuario (solo visible si status es false) -->
+    <mat-slide-toggle 
+        *ngIf="showReactivarToggle"
+        color="primary"
+        [checked]="reactivarUsuario"
+        (change)="onToggleChange($event)">
+        Reactivar Usuario
+    </mat-slide-toggle>
+
+    <!-- Botones -->
+    <div class="button-group">
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+            <mat-icon>save</mat-icon>
+            Guardar Cambios
+        </button>
+        <button mat-stroked-button color="warn" type="button" (click)="cancelar()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+        </button>
+    </div>
+</form>
