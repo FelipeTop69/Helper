@@ -26,10 +26,22 @@ builder.Services.AddScoped<UserBusiness>();
 //Mapper
 builder.Services.AddAutoMapper(typeof(GeneralMapper));
 
-
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Cors
+var origenesPermitidos = builder.Configuration.GetValue<string>("OrigenesPermitidos")!.Split(',');
+
+builder.Services.AddCors(opciones =>
+{
+    opciones.AddDefaultPolicy(opcionesCORS =>
+    {
+        opcionesCORS.WithOrigins(origenesPermitidos)
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 
 var app = builder.Build();
@@ -42,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
