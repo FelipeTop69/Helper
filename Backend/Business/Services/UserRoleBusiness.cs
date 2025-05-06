@@ -45,7 +45,7 @@ namespace Business.Services
             try
             {
 
-                _mapper.Map<UserRole>(dtoExp);
+                _mapper.Map(dtoExp, existingEntity);
                 var updated = await _data.UpdateAsync(existingEntity);
                 return _mapper.Map<UserRoleOptionsDTO>(updated);
             }

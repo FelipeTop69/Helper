@@ -1,0 +1,11 @@
+<app-generic-table
+    [title]="'Users'"
+    [data]="users"
+    [displayedColumns]="columnas"
+    [columnDefs]="columnDefs"
+    [showRegisterButton]="true"
+    [registerRoute]="'/user/create'"
+    [editRouteBase]="'/user/update'"
+    (delete)="eliminarUser($event)">
+</app-generic-table>
+

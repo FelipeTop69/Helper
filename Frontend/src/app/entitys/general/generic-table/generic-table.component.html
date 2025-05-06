@@ -1,0 +1,36 @@
+<h2>{{ title }}</h2>
+
+<button *ngIf="showRegisterButton" class="btn-register" mat-raised-button color="primary" [routerLink]="registerRoute">
+    <mat-icon>person_add</mat-icon> Registrar
+</button>
+
+<mat-card>
+    <mat-table [dataSource]="data" class="mat-elevation-z8" *ngIf="data.length">
+
+        <ng-container *ngFor="let col of columnDefs" [matColumnDef]="col.key">
+            <mat-header-cell *matHeaderCellDef>{{ col.label }}</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index">
+                {{ col.render ? col.render(element, i) : element[col.key] }}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container *ngIf="showActions" matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-icon-button class="btn-update" [routerLink]="[editRouteBase, row.id]">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="btn-delete" (click)="delete.emit(row)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <div *ngIf="!data.length" class="text-muted mt-4 text-center">
+        <p><i class="fa fa-hourglass"></i> No hay registros</p>
+    </div>
+</mat-card>
