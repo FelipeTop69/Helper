@@ -21,7 +21,7 @@ export class GenericTableComponent {
   @Input() showRegisterButton = false;
   @Input() registerRoute = '';
   @Input() editRouteBase: string = ''; 
-  @Input() showActions = true;
+  @Input() showActions = true;  
 
 
   @Output() delete = new EventEmitter<any>();
