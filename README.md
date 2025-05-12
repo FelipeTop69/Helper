@@ -13,8 +13,13 @@ dotnet run
 ```bash
 # Entity
 dotnet add package Microsoft.EntityFrameworkCore --version 9.0.4
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.4
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.4
+# Provedores DB
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.4
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+# Para el Provedor de MySql buscar la version preeliminar en el IDE
+# Para Migracion
+dotnet add package Microsoft.EntityFrameworkCore.Design (Permite Comandos de Migracion)
 
 # Business
 dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 12.0.1
